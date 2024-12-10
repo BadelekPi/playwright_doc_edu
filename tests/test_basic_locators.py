@@ -1,8 +1,12 @@
 import re
+import pytest
 from playwright.sync_api import Page, expect
 
-def test_list_node_links(page: Page):
+@pytest.fixture(autouse=True)
+def navigate_to_page(page: Page):
     page.goto("https://bootswatch.com/darkly/")
+
+def test_list_node_links(page: Page):
     locator_link = page.get_by_role("link", name="Card link")
     # Check second locator
     expect(locator_link.nth(1)).to_be_visible()
@@ -13,3 +17,56 @@ def test_list_node_links(page: Page):
         expect(li).to_be_visible()
     # Get array of texts
     texts = locator_link.all_inner_texts()
+
+def test_label_locators(page:Page):
+    # page.get_by_label("Email address").fill("test_test@gmail.com")
+    # page.get_by_label("Password").fill("secret")
+    page.get_by_placeholder("Password").fill("secret")
+    page.locator("#floatingPassword")
+
+def test_innet_text_locator(page:Page):
+    locator = page.get_by_text("with faded secondary text")
+    expect(locator).to_be_visible()
+
+    locator_btn = page.get_by_text("Middle")
+    locator_btn.click()
+    expect(locator_btn).to_be_enabled()
+
+@pytest.mark.skip_fixture(fixture_name="navigate_to_page")
+def test_another_website(page: Page):
+    page.goto("https://unsplash.com")
+    locator = page.get_by_alt_text("A person holding a memory card in their hand")
+
+def test_title_locator(page: Page):
+    locator = page.get_by_title("attribute")
+
+def test_css_selectors(page: Page):
+    # Not recommended!
+
+    # Pick every h1 elements
+    locator = page.locator("css=h1")
+
+    # Choose button
+    locator = page.locator("button.btn-primary")
+
+    # Choose button by ID
+    locator = page.locator("button#btnGroupDrop1")
+
+    # Attribute selector
+    locator = page.locator("input[value='correct value']")
+
+def test_css_selectors_hierarchy(page: Page):
+    # need to look firstly to class above, to select specified area, then to specified element
+    locator = page.locator("nav.bg-dark a.nav-link.active")
+
+    # pick item directly under above class
+    locator = page.locator("div.bs-component > ul.list-group")
+
+def test_css_selector_pseudo_classes(page: Page):
+    locator = page.locator("h1:text('Navbars')")
+
+    # Pick only visible element follow class and name
+    locator = page.locator("div.dropdown-menu:visible")
+
+    # Specified 4th button matching follow class
+    locator = page.locator(":nth-match(button.btn-primary, 4)")
