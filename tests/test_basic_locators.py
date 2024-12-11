@@ -70,3 +70,55 @@ def test_css_selector_pseudo_classes(page: Page):
 
     # Specified 4th button matching follow class
     locator = page.locator(":nth-match(button.btn-primary, 4)")
+
+def test_xpath_locator(page: Page):
+    # Select element explicitly
+    # /html/head/title
+
+    # double slash means anywhere in the document
+    locator = page.locator("xpath=//h1")
+
+    # @ means value
+    locator = page.locator("xpath=//h1[@id='navbars']")
+
+    # specified xpath is optional
+    locator = page.locator("//input[ @readonly ]")
+
+    locator = page.locator("//input[@value='wrong value']")
+
+    # specified element based on the text
+    locator = page.locator("//h1[ text() = 'Heading 1' ]")
+    locator = page.locator("//h1[ contains(text(), 'Head') ]")
+
+    # specified by class name
+    locator = page.locator("//h1[ contains(@class, 'btn-outline-primary') ]")
+
+    # specified by value
+    locator = page.locator("//input[ contains(@value, 'correct') ]")
+
+def test_other_selectors(page: Page):
+
+    # order selectors, append locators
+    locator = page.get_by_role("button", name="Primary").locator("nth=1")
+
+    # parent locator, like parent directory
+    locator = page.get_by_label("Email address").locator("..")
+
+    # keyword
+    page.locator("div.dropdown-menu").locator("visible=false")
+
+    # certain element
+    locator = page.get_by_role("heading").filter(has_text="Heading")
+
+    # filter inside group
+    page.locator("div.form-group").filter(has=page.get_by_label("Password"))
+
+
+
+
+
+
+
+
+
+
