@@ -114,6 +114,71 @@ def test_other_selectors(page: Page):
     page.locator("div.form-group").filter(has=page.get_by_label("Password"))
 
 
+def test_mouse_actions(page: Page):
+    locator_btn = page.get_by_role("button", name="Block button").first
+    page.locator("footer").highlight()
+    locator_btn.click()
+    locator_btn.dbclick()
+    locator_btn.dblclick(delay=500)
+    locator_btn.click(button="right")
+    locator_btn.click(modifiers=["Shift", "Alt"])
+    
+    outline_button = page.locator("button.btn-outline-primary")
+    
+    outline_button.hover()
+
+
+def test_input_field_actions(page: Page):
+    page.get_by_label("Email address")
+
+    page.locator("footer")
+    input = page.get_by_placeholder("Enter email")
+    input.fill("me@that.site")
+    input.clear()
+
+    input.type("me@that.site")
+
+    # delay between every char
+    input.type("me@that.site", delay=200)
+
+    valid_input = page.get_by_label("Valid input")
+    
+    # return value stored by field
+    valid_input.input_value()
+
+def test_radio_button(page: Page):
+    # check method to select radio button
+    radio_option2 = page.get_by_label("Option two can be something else and selecting it will deselect option one")
+    radio_option2.check()
+
+    radio_option1 = page.get_by_label("Option one is this and that—be sure to include why it's great")
+    radio_option1.check()
+
+def test_checkboxes(page: Page):
+    # select the same as radio buttons
+    checkbox = page.get_by_label("Default checkbox")
+    checkbox.check()
+
+    expect(checkbox).to_be_checked()
+
+    # deselect this checkbox
+    checkbox.uncheck()
+    expect(checkbox).to_be_checked(False)
+
+    checkbox.set_checked(True)
+
+    # after double click, normal behaviour - uncheck checkbox
+    checkbox.click()
+    checkbox.click()
+    expect(checkbox).to_be_checked(False)
+
+def test_switches(page: Page):
+    switch = page.get_by_label("Checked switch checkbox input")
+    switch.uncheck()
+    switch.check()
+
+    
+
 
 
 
