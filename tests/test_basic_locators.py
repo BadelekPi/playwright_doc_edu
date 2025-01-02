@@ -118,7 +118,7 @@ def test_mouse_actions(page: Page):
     locator_btn = page.get_by_role("button", name="Block button").first
     page.locator("footer").highlight()
     locator_btn.click()
-    locator_btn.dbclick()
+    locator_btn.dblclick()
     locator_btn.dblclick(delay=500)
     locator_btn.click(button="right")
     locator_btn.click(modifiers=["Shift", "Alt"])
@@ -144,7 +144,7 @@ def test_input_field_actions(page: Page):
     valid_input = page.get_by_label("Valid input")
     
     # return value stored by field
-    valid_input.input_value()
+    store_val = valid_input.input_value()
 
 def test_radio_button(page: Page):
     # check method to select radio button
@@ -163,14 +163,14 @@ def test_checkboxes(page: Page):
 
     # deselect this checkbox
     checkbox.uncheck()
-    expect(checkbox).to_be_checked(False)
+    expect(checkbox).not_to_be_checked()
 
     checkbox.set_checked(True)
 
     # after double click, normal behaviour - uncheck checkbox
     checkbox.click()
     checkbox.click()
-    expect(checkbox).to_be_checked(False)
+    expect(checkbox).not_to_be_checked()
 
 def test_switches(page: Page):
     switch = page.get_by_label("Checked switch checkbox input")
