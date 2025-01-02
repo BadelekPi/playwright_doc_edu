@@ -19,9 +19,9 @@ def test_list_node_links(page: Page):
     texts = locator_link.all_inner_texts()
 
 def test_label_locators(page:Page):
-    # page.get_by_label("Email address").fill("test_test@gmail.com")
-    # page.get_by_label("Password").fill("secret")
-    page.get_by_placeholder("Password").fill("secret")
+    page.get_by_label("Email address").fill("test_test@gmail.com")
+    page.get_by_label("Password").fill("secret")
+    # page.get_by_placeholder("Password").fill("secret")
     page.locator("#floatingPassword")
 
 def test_innet_text_locator(page:Page):
