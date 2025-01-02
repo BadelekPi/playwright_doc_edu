@@ -144,7 +144,7 @@ def test_input_field_actions(page: Page):
     valid_input = page.get_by_label("Valid input")
     
     # return value stored by field
-    store_val = valid_input.input_value()
+    store_val = valid_input.nth(0).input_value()
 
 def test_radio_button(page: Page):
     # check method to select radio button
@@ -167,8 +167,7 @@ def test_checkboxes(page: Page):
 
     checkbox.set_checked(True)
 
-    # after double click, normal behaviour - uncheck checkbox
-    checkbox.click()
+    # after  click, normal behaviour - uncheck checkbox
     checkbox.click()
     expect(checkbox).not_to_be_checked()
 
